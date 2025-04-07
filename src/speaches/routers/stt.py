@@ -205,6 +205,10 @@ def transcribe_file(
     stream: Annotated[bool, Form()] = False,
     hotwords: Annotated[str | None, Form()] = None,
     vad_filter: Annotated[bool, Form()] = False,
+    compression_ratio_threshold: Annotated[float, Form()] = 2.4,
+    condition_on_previous_text: Annotated[bool, Form()] = False,
+    beam_size: Annotated[int, Form()] = 5,
+    best_of: Annotated[int, Form()] = 5,
 ) -> Response | StreamingResponse:
     if model is None:
         model = config.whisper.model
@@ -228,6 +232,10 @@ def transcribe_file(
             temperature=temperature,
             vad_filter=vad_filter,
             hotwords=hotwords,
+            compression_ratio_threshold=compression_ratio_threshold,
+            condition_on_previous_text=condition_on_previous_text,
+            beam_size=beam_size,
+            best_of=best_of,
         )
         segments = TranscriptionSegment.from_faster_whisper_segments(segments)
 
